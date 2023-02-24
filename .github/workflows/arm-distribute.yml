@@ -1,7 +1,7 @@
 name: distribute-arm
 
 on:
- - workflow_dispatch
+  - workflow_dispatch
 
 jobs:
   build_job:
@@ -34,12 +34,13 @@ jobs:
             echo "install"
           run: |
             echo "Produced artifact at /artifacts/${artifact_name}"
+            touch ${PWD}/artifacts/${artifact_name}
       - name: Show the artifact
         run: |
           ls -al "${PWD}/artifacts"
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: build-dist
-          path: /artifacts/${artifact_name}
-          retention-days: 7
+      # - name: Upload Artifacts
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: build-dist
+      #     path: /artifacts/${artifact_name}
+      #     retention-days: 7
