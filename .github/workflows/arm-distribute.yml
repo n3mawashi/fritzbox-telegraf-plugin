@@ -15,29 +15,27 @@ jobs:
           - arch: aarch7
             distro: ubuntu20.04
     steps:
-      - uses: actions/checkout@v3
-      - uses: uraimo/run-on-arch-action@v2
+      - name: Checkout
+        uses: actions/checkout@v3
       - name: Build artifact
-        id: build
+        uses: uraimo/run-on-arch-action@v2
         with:
           arch: ${{ matrix.arch }}
           distro: ${{ matrix.distro }}
           githubToken: ${{ github.token }}
-          setup: |
-            mkdir -p "${PWD}/artifacts"
           dockerRunArgs: |
-            --volume "${PWD}/artifacts:/artifacts"
+            --volume "${PWD}/src:/src"
           env: |
             artifact_name: Fritzbox-telegraf-plugin-${{ matrix.distro }}_${{matrix.arch }}
           shell: /bin/sh
           install: |
             echo "install"
           run: |
-            echo "Produced artifact at /artifacts/${artifact_name}"
-            touch ${PWD}/artifacts/${artifact_name}
+            echo "Produced artifact at ${PWD}/src/build/dist"
+            touch "${PWD}/build/disk/test"
       - name: Show the artifact
         run: |
-          ls -al "${PWD}/artifacts"
+          ls -al "${PWD}/build/disk/test"
       # - name: Upload Artifacts
       #   uses: actions/upload-artifact@v3
       #   with:
